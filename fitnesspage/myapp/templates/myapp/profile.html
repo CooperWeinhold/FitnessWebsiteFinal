@@ -1,0 +1,26 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Profile and Fitness Goals{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">Profile and Fitness Goals</h2>
+    <div class="mb-4">
+        <h4>Current Information</h4>
+        <p><strong>Current Weight:</strong> {{ profile.current_weight }} lbs</p>
+        <p><strong>Goal Weight:</strong> {{ profile.goal_weight }} lbs</p>
+        <p><strong>Timeline:</strong> {{ profile.timeline }} weeks</p>
+        <p><strong>Height:</strong> {{ profile.height }} cm</p>
+        <p><strong>Age:</strong> {{ profile.age }} years</p>
+        <p><strong>Gender:</strong> {{ profile.get_gender_display }}</p>
+        <p><strong>Activity Level:</strong> {{ profile.get_activity_level_display }}</p>
+        <p><strong>Daily Caloric Intake Goal:</strong> {{ profile.macros }}</p>
+    </div>
+
+    <h4>Update Your Goals</h4>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update Goals</button>
+    </form>
+{% endblock %}
+

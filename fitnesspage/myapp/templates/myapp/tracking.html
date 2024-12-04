@@ -1,0 +1,43 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Progress Tracking{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">Progress Tracking</h2>
+    <canvas id="weightChart"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('weightChart').getContext('2d');
+        const weightChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ labels|safe }},  // Dates for the x-axis
+                datasets: [{
+                    label: 'Weight (lbs)',
+                    data: {{ weights|safe }},  // Weights for the y-axisi
+                    fill: false,
+                    borderColor: 'blue',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Date'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Weight (lbs)'
+                        },
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

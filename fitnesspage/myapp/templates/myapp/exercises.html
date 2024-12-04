@@ -1,0 +1,12 @@
+{% extends "myapp/base.html" %}
+
+{% block title %}Exercise Examples{% endblock %}
+
+{% block content %}
+    <h2 class="text-center">Exercise Examples</h2>
+    <ul>
+        {% for exercise in exercises %}
+            <li><strong>{{ exercise.name }}</strong>: {{ exercise.description }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
