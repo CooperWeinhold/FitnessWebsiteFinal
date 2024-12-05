@@ -23,6 +23,7 @@ cd fitnessSite
 python manage.py makemigrations (this will create any SQL entries that need to go into the database)
 python manage.py migrate (this will apply the migrations)
 python manage.py createsuperuser (this will create the administrator login for your /admin side of your project)
+python manage.py runserver
 ```
 
 ### Output
