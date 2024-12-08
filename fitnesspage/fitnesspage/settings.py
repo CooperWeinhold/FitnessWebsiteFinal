@@ -122,7 +122,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Redirects
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = '/new_homepage/'
 LOGOUT_REDIRECT_URL = 'login'
 
 

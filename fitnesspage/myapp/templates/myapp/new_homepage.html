@@ -1,0 +1,34 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block title %}
+New Homepage
+{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Welcome to FitPal!</h1>
+    <p>Your one-stop solution for fitness goals, tracking progress, and living a healthier life.</p>
+</header>
+
+<main>
+    <section>
+        <h2>Our Mission</h2>
+        <p>
+            We want to help you set achievable fitness goals, track your progress with personalized charts,
+            and provides healthy meal ideas and exercise routines tailored to your needs. People need a hand
+            some of the time, and that's what we're here to do.
+        </p>
+    </section>
+
+    <section>
+        <h2>Gallery</h2>
+        <div class="gallery">
+            <img src="{% static 'images/fitness1.webp' %}" alt="Fitness Image 1">
+            <img src="{% static 'images/fitness2.webp' %}" alt="Fitness Image 2">
+            <img src="{% static 'images/fitness3.webp' %}" alt="Fitness Image 3">
+
+        </div>
+    </section>
+</main>
+{% endblock %}

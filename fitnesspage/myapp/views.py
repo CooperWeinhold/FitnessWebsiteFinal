@@ -1,5 +1,5 @@
 # myapp/views.py
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -9,6 +9,13 @@ from .forms import RegisterForm, ProfileForm
 from .models import Profile, Exercise, Progress
 from django.utils import timezone
 from .models import Progress
+from django.contrib.auth.views import LoginView
+from django.shortcuts import render
+
+
+def new_homepage(request):
+    return render(request, 'myapp/new_homepage.html')
+
 
 
 
@@ -24,7 +31,7 @@ def login_view(request):
         if user is not None:
             # Log the user in if authentication succeeds
             login(request, user)
-            return HttpResponseRedirect(reverse('profile'))  # Redirect to profile after successful login
+            return HttpResponseRedirect(reverse('new_homepage'))  # Redirect to profile after successful login
         else:
             # If authentication fails, send an error message to the template
             return render(request, 'myapp/login.html', {'error': 'Invalid username or password'})
