@@ -1,43 +1,191 @@
-{% extends "myapp/base.html" %}
-
-{% block title %}Progress Tracking{% endblock %}
+{% extends 'myapp/base.html' %}
 
 {% block content %}
-    <h2 class="text-center">Progress Tracking</h2>
-    <canvas id="weightChart"></canvas>
+<div class="container mt-5">
+    <h2>Tracking Page</h2>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const ctx = document.getElementById('weightChart').getContext('2d');
-        const weightChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: {{ labels|safe }},  // Dates for the x-axis
-                datasets: [{
-                    label: 'Weight (lbs)',
-                    data: {{ weights|safe }},  // Weights for the y-axisi
-                    fill: false,
-                    borderColor: 'blue',
-                    tension: 0.1
-                }]
+    <!-- Meal Tracker Section -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3>Meal Tracker</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ meal_form.as_p }}
+                        <button type="submit" name="meal_submit" class="btn btn-success">Add Meal</button>
+                    </form>
+                    <form method="post" class="mt-3">
+                        {% csrf_token %}
+                        <button type="submit" name="clear_meals" class="btn btn-danger">Clear All Meals</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Meal Details</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Meal Name</th>
+                        <th>Calories</th>
+                        <th>Protein (g)</th>
+                        <th>Carbs (g)</th>
+                        <th>Fats (g)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for meal in meals %}
+                    <tr>
+                        <td>{{ meal.meal_name }}</td>
+                        <td>{{ meal.calories }}</td>
+                        <td>{{ meal.protein }}</td>
+                        <td>{{ meal.carbs }}</td>
+                        <td>{{ meal.fats }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bar Graph for Latest Meal -->
+    {% if latest_meal %}
+    <h4 class="mt-4">Latest Meal: {{ latest_meal.meal_name }}</h4>
+    <canvas id="mealChart" class="mt-4"></canvas>
+    {% else %}
+    <p class="text-muted mt-3">No meals have been added yet. Add a meal to see details!</p>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    {% if latest_meal %}
+    const mealCtx = document.getElementById('mealChart').getContext('2d');
+    new Chart(mealCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Calories', 'Protein', 'Carbs', 'Fats'],
+            datasets: [{
+                label: 'Meal Nutrition',
+                data: [{{ latest_meal.calories }}, {{ latest_meal.protein }}, {{ latest_meal.carbs }}, {{ latest_meal.fats }}],
+                backgroundColor: ['red', 'blue', 'green', 'orange']
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
             },
-            options: {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Date'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Weight (lbs)'
-                        },
-                        beginAtZero: false
-                    }
+            scales: {
+                x: { title: { display: true, text: 'Nutrients' } },
+                y: { title: { display: true, text: 'Amount (g or calories)' } }
+            }
+        }
+    });
+    {% endif %}
+</script>
+
+    <!-- Weight Tracker Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h3>Weight Tracker</h3>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ weight_form.as_p }}
+                <button type="submit" name="weight_submit" class="btn btn-success">Add Weight</button>
+            </form>
+
+            {% if weights %}
+            <h4 class="mt-4">Weight Progress</h4>
+            <canvas id="weightChart" class="mt-4"></canvas>
+            {% else %}
+            <p class="text-muted mt-3">No weight data available yet. Add your first weight entry to see progress!</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Macro Chart
+    {% if total_macros %}
+    const macroCtx = document.getElementById('macroChart').getContext('2d');
+    const macroData = JSON.parse('{{ total_macros|safe }}');
+    const macroLabels = macroData.map(item => item.date);
+    const macroDatasets = [
+        { label: 'Calories', data: macroData.map(item => item.total_calories), borderColor: 'red', fill: false },
+        { label: 'Protein (g)', data: macroData.map(item => item.total_protein), borderColor: 'blue', fill: false },
+        { label: 'Carbs (g)', data: macroData.map(item => item.total_carbs), borderColor: 'green', fill: false },
+        { label: 'Fats (g)', data: macroData.map(item => item.total_fats), borderColor: 'orange', fill: false }
+    ];
+
+    new Chart(macroCtx, {
+        type: 'line',
+        data: {
+            labels: macroLabels,
+            datasets: macroDatasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Date' }
+                },
+                y: {
+                    title: { display: true, text: 'Macros (g or calories)' }
                 }
             }
-        });
-    </script>
+        }
+    });
+    {% endif %}
+
+    // Weight Chart
+    {% if weights %}
+    const weightCtx = document.getElementById('weightChart').getContext('2d');
+    const weightData = JSON.parse('{{ weights|safe }}');
+    const weightLabels = weightData.map(item => item.date);
+    const weightValues = weightData.map(item => item.weight);
+
+    new Chart(weightCtx, {
+        type: 'line',
+        data: {
+            labels: weightLabels,
+            datasets: [{
+                label: 'Weight (lbs)',
+                data: weightValues,
+                borderColor: 'purple',
+                fill: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+            },
+            scales: {
+                x: {
+                    title: { display: true, text: 'Date' }
+                },
+                y: {
+                    title: { display: true, text: 'Weight (lbs)' }
+                }
+            }
+        }
+    });
+    {% endif %}
+</script>
+
 {% endblock %}
+

@@ -95,6 +95,30 @@ class Exercise(models.Model):
         #def __str__(self):
             #return self.name
 
+class Meal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    meal_name = models.CharField(max_length=100)
+    calories = models.PositiveIntegerField()
+    protein = models.FloatField()
+    carbs = models.FloatField()
+    fats = models.FloatField()
+
+    def __str__(self):
+        return f"{self.meal_name} by {self.user}"
+
+
+class WeightTracking(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    weight = models.FloatField()
+
+    def __str__(self):
+        return f"{self.weight} lbs on {self.date} by {self.user}"
+
+
+
+
+
 class Progress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)

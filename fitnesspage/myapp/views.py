@@ -5,13 +5,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .forms import RegisterForm, ProfileForm
-from .models import Profile, Exercise, Progress
+from .forms import RegisterForm, ProfileForm, MealForm, WeightForm
+from django.db.models import Sum
+from .models import Profile, Exercise, Progress, Meal, WeightTracking
 from django.utils import timezone
-from .models import Progress
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render
-
+import json
 
 def new_homepage(request):
     return render(request, 'myapp/new_homepage.html')
@@ -224,27 +224,56 @@ def exercises(request):
 
     return render(request, 'myapp/exercises.html', {'exercises': exercises})
 # Progress tracking page
-@login_required
 def tracking(request):
-    # Get the current year
-    current_year = timezone.now().year
+    # Initialize forms
+    meal_form = MealForm()
+    weight_form = WeightForm()
 
-    # Retrieve the user's weight entries for the current year
-    progress_data = Progress.objects.filter(user=request.user, date__year=current_year).order_by('date')
+    # Handle Meal Form Submission
+    if request.method == "POST" and 'meal_submit' in request.POST:
+        meal_form = MealForm(request.POST)
+        if meal_form.is_valid():
+            meal = meal_form.save(commit=False)
+            meal.user = request.user
+            meal.save()
+            return redirect('tracking')  # Refresh to display updates
 
-    # Prepare data for the chart
-    labels = []
-    weights = []
-    for entry in progress_data:
-        labels.append(entry.date.strftime('%b %d'))  # Format date as "Month Day", e.g., "Nov 10"
-        weights.append(entry.weight)
+        # Handle clear action
+        if request.method == "POST" and 'clear_meals' in request.POST:
+            Meal.objects.filter(user=request.user).delete()
+            return redirect('tracking')  # Refresh to display updates
 
-    # Pass the labels and weights to the template for chart rendering
+    # Handle Weight Form Submission
+    if request.method == "POST" and 'weight_submit' in request.POST:
+        weight_form = WeightForm(request.POST)
+        if weight_form.is_valid():
+            weight_entry = weight_form.save(commit=False)
+            weight_entry.user = request.user
+            weight_entry.save()
+
+    # Get Meal Data
+    meals = Meal.objects.filter(user=request.user).order_by('-id')
+    latest_meal = meals.first()
+
+
+    # Get Weight Data
+    weights = [
+        {
+            "date": item["date"].strftime('%Y-%m-%d'),
+            "weight": item["weight"]
+        }
+        for item in WeightTracking.objects.filter(user=request.user).order_by('date').values('date', 'weight')
+    ]
+
+    # Pass data to the template
     return render(request, 'myapp/tracking.html', {
-        'labels': labels,
-        'weights': weights
+        'meal_form': meal_form,
+        'meals': meals,
+        'latest_meal': latest_meal,
+        'weight_form': weight_form,
+          # Convert to JSON string
+        'weights': json.dumps(weights),  # Convert to JSON string
     })
-
 
 # Recipe ideas page
 def recipes(request):
