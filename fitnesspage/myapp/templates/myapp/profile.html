@@ -3,24 +3,46 @@
 {% block title %}Profile and Fitness Goals{% endblock %}
 
 {% block content %}
-    <h2 class="text-center">Profile and Fitness Goals</h2>
-    <div class="mb-4">
-        <h4>Current Information</h4>
-        <p><strong>Current Weight:</strong> {{ profile.current_weight }} lbs</p>
-        <p><strong>Goal Weight:</strong> {{ profile.goal_weight }} lbs</p>
-        <p><strong>Timeline:</strong> {{ profile.timeline }} weeks</p>
-        <p><strong>Height:</strong> {{ profile.height }} cm</p>
-        <p><strong>Age:</strong> {{ profile.age }} years</p>
-        <p><strong>Gender:</strong> {{ profile.get_gender_display }}</p>
-        <p><strong>Activity Level:</strong> {{ profile.get_activity_level_display }}</p>
-        <p><strong>Daily Caloric Intake Goal:</strong> {{ profile.macros }}</p>
+<div class="container my-5">
+    <h2 class="text-center mb-4">Personal Information and Daily Calorie Calculator</h2>
+    <p>Setting goals for your self is important. Plug in your information below to see
+    what steps you need to take next. Once you plug in your information the page will
+    show the recommend daily caloric intake to achieve said goal as well as displaying
+    your body's maintenance calories it naturally burns to perform the bottom line bodily
+    functions. </p>
+
+    <!-- Profile Information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Current Information</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Current Weight:</strong> {{ profile.current_weight }} lbs</p>
+            <p><strong>Goal Weight:</strong> {{ profile.goal_weight }} lbs</p>
+            <p><strong>Timeline:</strong> {{ profile.timeline }} weeks</p>
+            <p><strong>Height:</strong> {{ profile.height }} cm</p>
+            <p><strong>Age:</strong> {{ profile.age }} years</p>
+            <p><strong>Gender:</strong> {{ profile.get_gender_display }}</p>
+            <p><strong>Activity Level:</strong> {{ profile.get_activity_level_display }}</p>
+            <p><strong>Daily Caloric Intake Goal:</strong> {{ profile.macros }} kcal</p>
+            <p><strong>Maintenance Calories (Amount of calories your body burns in a day to survive):</strong> {{ profile.maintenance_calories }} kcal</p>
+        </div>
     </div>
 
-    <h4>Update Your Goals</h4>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Update Goals</button>
-    </form>
+    <!-- Update Goals Form -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Update Information</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Update Goals</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
 

@@ -125,16 +125,72 @@ def calculate_macros(current_weight, goal_weight, height, age, gender, activity_
 
 # Exercises page
 def exercises(request):
-    exercises = [
-        {'name': 'Push-up', 'description': 'An exercise to strengthen the chest, shoulders, and triceps.'},
-        {'name': 'Squat', 'description': 'An exercise for the lower body, especially quads and glutes.'},
-        {'name': 'Bench Press', 'description': 'An exercise that mainly focuses on the chest and some triceps.'},
-        {'name': 'Dumbbell Curls', 'description': 'A classic exercise that strengthens the biceps'},
-        {'name': 'Skull-Crushers', 'description': 'An over the head exercise that hits the triceps.'},
+    default_exercises = [
+        {
+            "name": "Bench Press",
+            "description": "A classic chest exercise, done by pressing the barbell up and down.",
+            "category": "strength",
+            "difficulty": "hard",
+            "video_url": "https://www.youtube.com/embed/lWFknlOTbyM"
+        },
+        {
+            "name": "Back Squat",
+            "description": "One of the best overall leg exercises, make sure you keep your back straight and feet shoulder width apart.",
+            "category": "strength",
+            "difficulty": "hard",
+            "video_url": "https://www.youtube.com/embed/aOzrA4FgnM0"
+        },
+        {
+            "name": "Power Clean",
+            "description": "A great full body exercise.",
+            "category": "strength",
+            "difficulty": "hard",
+            "video_url": "https://www.youtube.com/embed/E2z5zK5V-MM"
+        },
+        {
+            "name": "Push-Ups",
+            "description": "Start in a high plank position, lower your chest to the floor, then push back up.",
+            "category": "strength",
+            "difficulty": "medium",
+            "video_url": "https://www.youtube.com/embed/IODxDxX7oi4"
+        },
+        {
+            "name": "Jumping Jacks",
+            "description": "A cardio exercise to warm up your body.",
+            "category": "cardio",
+            "difficulty": "easy",
+            "video_url": "https://www.youtube.com/embed/uLVt6u15L98"
+        },
+        {
+            "name": "Burpees",
+            "description": "Start in a standing position, drop into a squat, kick your legs back, then return to standing, repeat.",
+            "category": "cardio",
+            "difficulty": "hard",
+            "video_url": "https://www.youtube.com/embed/qLBImHhCXSw"
+        },
+        {
+            "name": "Lunges",
+            "description": "Step forward with one leg and lower your hips until both knees are bent at 90-degree angles.",
+            "category": "strength",
+            "difficulty": "medium",
+            "video_url": "https://www.youtube.com/embed/MxfTNXSFiYI"
+        },
     ]
+
+    for exercise_data in default_exercises:
+        Exercise.objects.get_or_create(**exercise_data)
+
+    # Get exercises, filtered by category and difficulty if specified
+    category = request.GET.get('category', None)
+    difficulty = request.GET.get('difficulty', None)
+    exercises = Exercise.objects.all()
+
+    if category:
+        exercises = exercises.filter(category=category)
+    if difficulty:
+        exercises = exercises.filter(difficulty=difficulty)
+
     return render(request, 'myapp/exercises.html', {'exercises': exercises})
-
-
 # Progress tracking page
 @login_required
 def tracking(request):
