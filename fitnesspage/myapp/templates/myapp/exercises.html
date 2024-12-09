@@ -5,10 +5,34 @@
 
 {% block content %}
 <div class="container my-5">
+    <!-- Tips Section -->
+    <section class="tips-section mb-5">
+        <h2 class="text-center">Exercise Tips</h2>
+        <p>
+            Whether you're a beginner or an experienced gym-goer, the key to fitness is consistency. Always start with a proper warm-up to prepare your body for exercise and reduce the risk of injury.
+            Aim to balance cardio, strength training, and flexibility exercises in your routine. Remember it's not necessarily how long you spend in the gym but what you actually put into it when you're
+            there. If a person is wanting to improve them self in the gym they should aim to have intense workouts whenever they go to the gym.
+        </p>
+        <h4>Workout Splits</h4>
+        <ul>
+            <li><strong>Full-Body Split:</strong> Ideal for beginners or those short on time. Perform 2-3 full-body workouts per week. Doing a full-body workout in a gym session relies heavily on
+            intensity. A full-body workout is going to involve less total sets for a specific muscle group so it's imperative to go to failure on each set.</li>
+            <li><strong>Upper/Lower Split:</strong> Alternate between upper body and lower body workouts, training 4 days per week. For a split that swaps between upper and lower body for each training
+            session it may be beneficial to split your upper and lower body into two different groups for the four days. An example of this being hitting a more quad and calf dominant workout on one
+            of you lower body days, then hitting a more hamstring and glute focused workout the next lower body session.</li>
+            <li><strong>Push/Pull/Legs Split:</strong> Divide your workouts into push exercises (chest, shoulders, triceps), pull exercises (back, biceps), and legs. Train 5-6 days per week.
+            This is one of the most common workout splits. It's designed in a way that the muscle groups are worked evenly while still giving enough time to recover between sessions.</li>
+        </ul>
+        <h4>Set/Rep Ranges</h4>
+        <ul>
+            <li><strong>1-3 Reps:</strong> One to three reps is an ideal range to build strength. Utilize this range on compound lifts like bench press and back squat.</li>
+            <li><strong>4-8 Reps:</strong> Four to eight reps is great for building muscle mass. This is the overall size of how the muscles appear.</li>
+            <li><strong>10-15 Reps:</strong> Anything in this range is more for conditioning the muscles. This is great if an individual wants to improve their overall stamina. </li>
+        </ul>
+    </section>
+
+    <!-- Exercise Library -->
     <h2 class="text-center">Exercise Library</h2>
-
-
-    <!-- Filters -->
     <form method="get" class="mb-4">
         <div class="row">
             <div class="col-md-4">
@@ -34,7 +58,6 @@
         </div>
     </form>
 
-    <!-- Exercise List -->
     <div class="row">
         {% for exercise in exercises %}
         <div class="col-md-4 mb-4">
@@ -54,7 +77,7 @@
                     <iframe
                         width="100%"
                         height="200"
-                        src="{{ exercise.video_url|safe }}"
+                        src="{{ exercise.video_url }}"
                         title="Exercise Tutorial"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

@@ -175,6 +175,38 @@ def exercises(request):
             "difficulty": "medium",
             "video_url": "https://www.youtube.com/embed/MxfTNXSFiYI"
         },
+        {
+            "name": "Stretching",
+            "description": "A proper stretching routine is essential for muscle recovery/growth.",
+            "category": "flexibility",
+            "difficulty": "easy",
+            "video_url": "https://www.youtube.com/embed/FI51zRzgIe4"
+        },
+        {
+            "name": "Improving Balance",
+            "description": "Having good balance is great for daily functionality as well as being safe incase of a fall",
+            "category": "balance",
+            "difficulty": "easy",
+            "video_url": "https://www.youtube.com/embed/SzbVLVxXO0s"
+        },{
+            "name": "Dumbbell Curls",
+            "description": "One of the most well known arm exercise to hit the biceps.",
+            "category": "strength",
+            "difficulty": "medium",
+            "video_url": "https://www.youtube.com/embed/ykJmrZ5v0Oo"
+        },{
+            "name": "Cable Triceps Pushdown",
+            "description": "Great movement utilizing a cable machine to hit the triceps.",
+            "category": "strength",
+            "difficulty": "medium",
+            "video_url": "https://www.youtube.com/embed/-zLyUAo1gMw"
+        },{
+            "name": "Hammer Curls",
+            "description": "A variation of the classic dumbbell curl.",
+            "category": "strength",
+            "difficulty": "medium",
+            "video_url": "https://www.youtube.com/embed/BRVDS6HVR9Q"
+        },
     ]
 
     for exercise_data in default_exercises:

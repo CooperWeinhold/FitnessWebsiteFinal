@@ -4,3 +4,19 @@
     margin: 10px; /* Add spacing between images */
     border-radius: 10px; /* Rounded corners */
 }
+
+.tips-section {
+    background-color: #f8f9fa; /* Light grey background */
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.tips-section h2 {
+    color: #007bff; /* Bootstrap primary color */
+}
+
+.tips-section ul {
+    list-style-type: square;
+    padding-left: 20px;
+}
