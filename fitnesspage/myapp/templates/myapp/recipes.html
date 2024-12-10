@@ -1,12 +1,54 @@
-{% extends "myapp/base.html" %}
-
-{% block title %}Healthy Meal Ideas{% endblock %}
+{{% extends "myapp/base.html" %}
 
 {% block content %}
-    <h2 class="text-center">Healthy Meal Ideas</h2>
-    <ul>
+<div class="container mt-4">
+    <h1 class="text-center">Healthy Recipes</h1>
+
+    <!-- Search Bar -->
+    <form method="GET" class="my-4">
+        <div class="input-group">
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Search for recipes..."
+                value="{{ search_query }}">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </form>
+
+    <h2 class="mt-4">
+        {% if search_query %}Search Results{% else %}Example Healthy Meals{% endif %}
+    </h2>
+    <div class="row">
         {% for recipe in recipes %}
-            <li><strong>{{ recipe.name }}</strong>: {{ recipe.description }}</li>
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <p><strong>Macros:</strong></p>
+                        <ul>
+                            <li>Calories: {{ recipe.calories }} kcal</li>
+                            <li>Carbs: {{ recipe.carbohydrates }} g</li>
+                            <li>Protein: {{ recipe.protein }} g</li>
+                            <li>Fat: {{ recipe.fat }} g</li>
+                        </ul>
+                        <p><strong>Ingredients:</strong></p>
+                        <ul>
+                            {% for ingredient in recipe.extendedIngredients %}
+                                <li>{{ ingredient.original }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p><strong>Estimated Cost:</strong> ${{ recipe.pricePerServing|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
+
+    {% if not recipes %}
+        <p class="text-center mt-4">No recipes found. Try searching for something else!</p>
+    {% endif %}
+</div>
 {% endblock %}

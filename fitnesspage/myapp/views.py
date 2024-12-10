@@ -11,8 +11,60 @@ from .models import Profile, Exercise, Progress, Meal, WeightTracking
 from django.utils import timezone
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render
-import json
+import json, requests
+from django.conf import settings
 
+
+# Recipe View Function
+def recipes(request):
+    url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/complexSearch"
+    headers = {
+        "x-rapidapi-key": settings.RAPIDAPI_KEY,
+        "x-rapidapi-host": "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+    }
+
+    query_params = {
+        "query": "healthy",
+        "number": 5,
+        "addRecipeInformation": "true",
+        "addRecipeNutrition": "true",
+    }
+
+    search_query = request.GET.get("search")
+    if search_query:
+        query_params["query"] = search_query
+
+    try:
+        # Debug: Log API request details
+        print(f"API Request URL: {url}")
+        print(f"Headers: {headers}")
+        print(f"Query Params: {query_params}")
+
+        # Make the API call
+        response = requests.get(url, headers=headers, params=query_params)
+        response.raise_for_status()
+
+        # Debug: Log API response details
+        data = response.json()
+        print(f"API Response: {data}")
+
+        # Extract recipes
+        recipes = data.get("results", [])
+        for recipe in recipes:
+            if "nutrition" in recipe and "nutrients" in recipe["nutrition"]:
+                nutrients = recipe["nutrition"]["nutrients"]
+                recipe["calories"] = next((n["amount"] for n in nutrients if n["name"] == "Calories"), None)
+                recipe["carbs"] = next((n["amount"] for n in nutrients if n["name"] == "Carbohydrates"), None)
+                recipe["protein"] = next((n["amount"] for n in nutrients if n["name"] == "Protein"), None)
+                recipe["fat"] = next((n["amount"] for n in nutrients if n["name"] == "Fat"), None)
+            else:
+                recipe["calories"] = recipe["carbs"] = recipe["protein"] = recipe["fat"] = None
+    except requests.exceptions.RequestException as e:
+        # Debug: Log API error
+        print(f"API Error: {e}")
+        recipes = []
+
+    return render(request, 'myapp/recipes.html', {"recipes": recipes, "search_query": search_query or ""})
 def new_homepage(request):
     return render(request, 'myapp/new_homepage.html')
 
@@ -276,10 +328,3 @@ def tracking(request):
     })
 
 # Recipe ideas page
-def recipes(request):
-    recipes = [
-        {'name': 'Avocado Toast', 'description': 'A quick breakfast with healthy fats and fiber.'},
-        {'name': 'Chicken Salad', 'description': 'High-protein meal with vegetables and lean protein.'},
-        {'name': 'Beef, potato, and egg bowl', 'description': 'A hearty solid meal filled with protein, carbs, and healthy fats.'},
-    ]
-    return render(request, 'myapp/recipes.html', {'recipes': recipes})

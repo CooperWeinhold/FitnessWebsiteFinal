@@ -40,3 +40,4 @@ cjweinhold@mail.fhsu.edu
 Inspiration, code snippets, etc.
 https://chatgpt.com/share/6756fcd6-349c-8007-b329-e72426059a6d
 https://chatgpt.com/share/6756fd08-c91c-8007-b916-437b94975e8a
+https://chatgpt.com/share/675772a6-fce8-8007-9332-e298f4e93852
