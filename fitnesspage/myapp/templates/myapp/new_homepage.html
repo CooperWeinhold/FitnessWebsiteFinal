@@ -3,11 +3,12 @@
 
 {% block content %}
 <!-- Hero Section -->
-<div class="jumbotron text-center text-white bg-dark" style="background-image: url('{% static "myapp/images/hero-bg.jpg" %}'); background-size: cover; background-position: center;">
-    <h1 class="display-4">Welcome to Your FitPal!</h1>
-    <p class="lead">Track your progress, explore recipes, and stay motivated.</p>
-    <a href="/recipes/" class="btn btn-primary btn-lg">Explore Recipes</a>
+<div class="jumbotron text-center text-white bg-dark animate__animated animate__fadeIn" style="animation-delay: 1.0s; animation-duration: 2.5s;">
+    <h1 class="display-4">Welcome to Your Fitness Journey!</h1>
+    <p class="lead animate__animated animate__fadeInUp">Track your progress, explore recipes, and stay motivated.</p>
+    <a href="/recipes/" class="btn btn-primary btn-lg animate__animated animate__bounceIn" style="animation-delay: 1.0s; animation-duration: 2.5s;">Explore Recipes</a>
 </div>
+
 
 <!-- Features Section -->
 <div class="container mt-4">
@@ -15,30 +16,42 @@
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
-                    <i class="fas fa-dumbbell fa-3x text-primary mb-3"></i>
-                    <h5 class="card-title">Track Progress</h5>
-                    <p class="card-text">Log your weight and workout progress over time.</p>
-                    <a href="/tracking/" class="btn btn-outline-primary">Start Tracking</a>
+                    <div class="card h-100 animate__animated animate__zoomIn" style="animation-delay: 1.0s; animation-duration: 2.5s;">
+                        <img src="{% static 'images/tracking.webp' %}" class="card-img-top" alt="Tracking">
+                        <div class="card-body">
+                            <h5 class="card-title">Track Progress</h5>
+                            <p class="card-text">Log your weight and workout progress over time.</p>
+                            <a href="/tracking/" class="btn btn-outline-primary">Start Tracking</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
-                    <i class="fas fa-carrot fa-3x text-success mb-3"></i>
-                    <h5 class="card-title">Healthy Recipes</h5>
-                    <p class="card-text">Discover delicious and nutritious meal ideas.</p>
-                    <a href="/recipes/" class="btn btn-outline-success">Find Recipes</a>
+                    <div class="card h-100 animate__animated animate__zoomIn" style="animation-delay: 1.0s; animation-duration: 2.5s;">
+                        <img src="{% static '/images/recipes.webp' %}" class="card-img-top" alt="Recipes">
+                        <div class="card-body">
+                            <h5 class="card-title">Healthy Recipes</h5>
+                            <p class="card-text">Discover delicious and nutritious meal ideas.</p>
+                            <a href="/recipes/" class="btn btn-outline-success">Find Recipes</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card text-center">
                 <div class="card-body">
-                    <i class="fas fa-running fa-3x text-warning mb-3"></i>
-                    <h5 class="card-title">Exercise Library</h5>
-                    <p class="card-text">Learn effective exercises for every fitness goal.</p>
-                    <a href="/exercises/" class="btn btn-outline-warning">View Exercises</a>
+                    <div class="card h-100 animate__animated animate__zoomIn" style="animation-delay: 1.0s; animation-duration: 2.5s;">
+                        <img src="{% static 'images/exercises.webp' %}" class="card-img-top" alt="Exercises">
+                        <div class="card-body">
+                            <h5 class="card-title">Exercise Library</h5>
+                            <p class="card-text">Learn effective exercises for every fitness goal.</p>
+                            <a href="/exercises/" class="btn btn-outline-warning">View Exercises</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
