@@ -25,9 +25,9 @@ def recipes(request):
 
     query_params = {
         "query": "healthy",
-        "number": 5,
+        "number": 9,
         "addRecipeInformation": "true",
-        "addRecipeNutrition": "true",
+        "addRecipeNutrition": "true",  # Include nutrition information
     }
 
     search_query = request.GET.get("search")
@@ -48,23 +48,36 @@ def recipes(request):
         data = response.json()
         print(f"API Response: {data}")
 
-        # Extract recipes
-        recipes = data.get("results", [])
-        for recipe in recipes:
-            if "nutrition" in recipe and "nutrients" in recipe["nutrition"]:
-                nutrients = recipe["nutrition"]["nutrients"]
-                recipe["calories"] = next((n["amount"] for n in nutrients if n["name"] == "Calories"), None)
-                recipe["carbs"] = next((n["amount"] for n in nutrients if n["name"] == "Carbohydrates"), None)
-                recipe["protein"] = next((n["amount"] for n in nutrients if n["name"] == "Protein"), None)
-                recipe["fat"] = next((n["amount"] for n in nutrients if n["name"] == "Fat"), None)
-            else:
-                recipe["calories"] = recipe["carbs"] = recipe["protein"] = recipe["fat"] = None
+        # Extract relevant recipe data
+        recipes = [
+            {
+                "id": recipe.get("id"),
+                "title": recipe.get("title"),
+                "image": recipe.get("image"),
+                "summary": recipe.get("summary"),
+                "calories": next(
+                    (n["amount"] for n in recipe.get("nutrition", {}).get("nutrients", []) if n["name"] == "Calories"), None
+                ),
+                "carbs": next(
+                    (n["amount"] for n in recipe.get("nutrition", {}).get("nutrients", []) if n["name"] == "Carbohydrates"), None
+                ),
+                "protein": next(
+                    (n["amount"] for n in recipe.get("nutrition", {}).get("nutrients", []) if n["name"] == "Protein"), None
+                ),
+                "fat": next(
+                    (n["amount"] for n in recipe.get("nutrition", {}).get("nutrients", []) if n["name"] == "Fat"), None
+                ),
+            }
+            for recipe in data.get("results", [])
+        ]
+
     except requests.exceptions.RequestException as e:
         # Debug: Log API error
         print(f"API Error: {e}")
         recipes = []
 
     return render(request, 'myapp/recipes.html', {"recipes": recipes, "search_query": search_query or ""})
+
 def new_homepage(request):
     return render(request, 'myapp/new_homepage.html')
 

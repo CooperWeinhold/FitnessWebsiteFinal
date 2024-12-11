@@ -1,54 +1,44 @@
-{{% extends "myapp/base.html" %}
+{% extends 'myapp/base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <h1 class="text-center">Healthy Recipes</h1>
+<div class="container">
+    <h1 class="text-center my-4">Recipes</h1>
 
     <!-- Search Bar -->
-    <form method="GET" class="my-4">
+    <form method="get" action="" class="mb-4">
         <div class="input-group">
-            <input
-                type="text"
-                name="search"
-                class="form-control"
-                placeholder="Search for recipes..."
-                value="{{ search_query }}">
+            <input type="text" name="search" class="form-control" placeholder="Search for recipes..." value="{{ search_query }}">
             <button class="btn btn-primary" type="submit">Search</button>
         </div>
     </form>
 
-    <h2 class="mt-4">
-        {% if search_query %}Search Results{% else %}Example Healthy Meals{% endif %}
-    </h2>
     <div class="row">
         {% for recipe in recipes %}
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ recipe.title }}</h5>
-                        <p><strong>Macros:</strong></p>
-                        <ul>
-                            <li>Calories: {{ recipe.calories }} kcal</li>
-                            <li>Carbs: {{ recipe.carbohydrates }} g</li>
-                            <li>Protein: {{ recipe.protein }} g</li>
-                            <li>Fat: {{ recipe.fat }} g</li>
-                        </ul>
-                        <p><strong>Ingredients:</strong></p>
-                        <ul>
-                            {% for ingredient in recipe.extendedIngredients %}
-                                <li>{{ ingredient.original }}</li>
-                            {% endfor %}
-                        </ul>
-                        <p><strong>Estimated Cost:</strong> ${{ recipe.pricePerServing|floatformat:2 }}</p>
-                    </div>
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <img src="{{ recipe.image }}" class="card-img-top" alt="{{ recipe.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.title }}</h5>
+                    <p class="card-text">{{ recipe.summary|safe }}</p>
+                    <ul class="list-group list-group-flush">
+                        {% if recipe.calories %}
+                        <li class="list-group-item">Calories: {{ recipe.calories }} kcal</li>
+                        {% endif %}
+                        {% if recipe.protein %}
+                        <li class="list-group-item">Protein: {{ recipe.protein }} g</li>
+                        {% endif %}
+                        {% if recipe.fat %}
+                        <li class="list-group-item">Fat: {{ recipe.fat }} g</li>
+                        {% endif %}
+                        {% if recipe.carbs %}
+                        <li class="list-group-item">Carbohydrates: {{ recipe.carbs }} g</li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
-
-    {% if not recipes %}
-        <p class="text-center mt-4">No recipes found. Try searching for something else!</p>
-    {% endif %}
 </div>
 {% endblock %}
