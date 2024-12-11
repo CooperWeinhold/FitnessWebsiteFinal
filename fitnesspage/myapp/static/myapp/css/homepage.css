@@ -1,0 +1,28 @@
+/* Hero Section */
+.jumbotron {
+    padding: 5rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+/* Card Styling */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Footer */
+footer {
+    margin-top: 30px;
+}
+
+body {
+    background: linear-gradient(135deg, #74ebd5, #acb6e5); /* Cool gradient */
+    min-height: 100vh;
+    color: #333;
+}

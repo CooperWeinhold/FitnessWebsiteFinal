@@ -1,34 +1,62 @@
-{% extends "myapp/base.html" %}
+{% extends 'myapp/base.html' %}
 {% load static %}
 
-{% block title %}
-New Homepage
-{% endblock %}
-
 {% block content %}
-<header>
-    <h1>Welcome to FitPal!</h1>
-    <p>Your one-stop solution for fitness goals, tracking progress, and living a healthier life.</p>
-</header>
+<!-- Hero Section -->
+<div class="jumbotron text-center text-white bg-dark" style="background-image: url('{% static "myapp/images/hero-bg.jpg" %}'); background-size: cover; background-position: center;">
+    <h1 class="display-4">Welcome to Your FitPal!</h1>
+    <p class="lead">Track your progress, explore recipes, and stay motivated.</p>
+    <a href="/recipes/" class="btn btn-primary btn-lg">Explore Recipes</a>
+</div>
 
-<main>
-    <section>
-        <h2>Our Mission</h2>
-        <p>
-            We want to help you set achievable fitness goals, track your progress with personalized charts,
-            and provides healthy meal ideas and exercise routines tailored to your needs. People need a hand
-            some of the time, and that's what we're here to do.
-        </p>
-    </section>
-
-    <section>
-        <h2>Gallery</h2>
-        <div class="gallery">
-            <img src="{% static 'images/fitness1.webp' %}" alt="Fitness Image 1">
-            <img src="{% static 'images/fitness2.webp' %}" alt="Fitness Image 2">
-            <img src="{% static 'images/fitness3.webp' %}" alt="Fitness Image 3">
-
+<!-- Features Section -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-dumbbell fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Track Progress</h5>
+                    <p class="card-text">Log your weight and workout progress over time.</p>
+                    <a href="/tracking/" class="btn btn-outline-primary">Start Tracking</a>
+                </div>
+            </div>
         </div>
-    </section>
-</main>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-carrot fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Healthy Recipes</h5>
+                    <p class="card-text">Discover delicious and nutritious meal ideas.</p>
+                    <a href="/recipes/" class="btn btn-outline-success">Find Recipes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="fas fa-running fa-3x text-warning mb-3"></i>
+                    <h5 class="card-title">Exercise Library</h5>
+                    <p class="card-text">Learn effective exercises for every fitness goal.</p>
+                    <a href="/exercises/" class="btn btn-outline-warning">View Exercises</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Personalized Welcome Section -->
+{% if user.is_authenticated %}
+<div class="container text-center my-4">
+    <h2>Welcome Back, {{ user.username }}!</h2>
+    <p>Your current weight: <strong>{{ user.profile.current_weight }} lbs</strong></p>
+    <p>Your goal weight: <strong>{{ user.profile.goal_weight }} lbs</strong></p>
+    <a href="/profile/" class="btn btn-info">Update Profile</a>
+</div>
+{% endif %}
+
+<!-- Footer -->
+<footer class="text-center py-3 bg-primary text-white mt-4">
+    <p>© 2024 Your FitPal</p>
+</footer>
 {% endblock %}
